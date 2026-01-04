@@ -4,6 +4,7 @@ import { commentController } from './comment.controller';
 
 const router = express.Router();
 
+router.use("/:commentId",commentController.getCommentbyId)
 router.use("/",auth(UserRole.ADMIN,UserRole.USER),commentController.createComment)
 
 export const commentRouter: Router = router;

@@ -135,34 +135,40 @@ const getPostById = async (postId: string) => {
             where: {
                 id: postId
             },
-            include: {
-                comments: {
-                    where: {
-                        parentId: null,
-                        status: CommentStatus.APPROVED
-                    },
-                    orderBy: { createdAt: "desc" },
-                    include: {
-                        replies: {
-                            where: {
-                                status: CommentStatus.APPROVED
-                            },
-                            orderBy: { createdAt: "asc" },
-                            include: {
-                                replies: {
-                                    where: {
-                                        status: CommentStatus.APPROVED
-                                    },
-                                    orderBy: { createdAt: "asc" }
-                                }
+           include:{
+            comments:{
+                where:{
+                    parentId:null,
+                    status:CommentStatus.APPROVED
+                },
+                orderBy:{
+                    createdAt:"desc"
+                },
+                include:{
+                    replies:{
+                        where:{
+                            status:CommentStatus.APPROVED
+                        },
+                        orderBy:{
+                            createdAt:"asc"
+                        },
+                        include:{
+                            replies:{
+                                where:{
+                                    status:CommentStatus.APPROVED
+                                },
+                                orderBy:{
+                            createdAt:"asc"
+                        }
                             }
                         }
                     }
-                },
-                _count: {
-                    select: { comments: true }
                 }
+            },
+            _count:{
+                select:{comments:true}
             }
+           }
         })
         return postData
     })
