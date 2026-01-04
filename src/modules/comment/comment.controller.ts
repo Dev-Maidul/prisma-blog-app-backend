@@ -17,6 +17,7 @@ const createComment=async(req:Request,res:Response)=>{
         })
     }
 }
+
 const getCommentbyId=async(req:Request,res:Response)=>{
     try {
         const {commentId}=req.params;
@@ -32,7 +33,25 @@ const getCommentbyId=async(req:Request,res:Response)=>{
         })
     }
 }
+
+const getCommentbyAuthor=async(req:Request,res:Response)=>{
+    try {
+        const {authorId}=req.params;
+        const result=await commentServie.getCommentbyAuthor(authorId as string);
+        res.status(200).json({
+            message:"Comment fetch successfull",
+            data:result
+        })
+    } catch (error) {
+        res.status(400).json({
+            message:"Can not find comment",
+            error
+        })
+    }
+}
+
 export const commentController={
     createComment,
-    getCommentbyId
+    getCommentbyId,
+    getCommentbyAuthor
 }
