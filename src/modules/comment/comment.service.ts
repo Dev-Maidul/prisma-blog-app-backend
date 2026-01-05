@@ -42,7 +42,7 @@ const getCommentbyId=async(id:string)=>{
 }
 
 const getCommentbyAuthor=async(authorId:string)=>{
-    console.log(authorId)
+    // console.log(authorId)
     return await prisma.comment.findMany({
         where:{
             authorId
@@ -60,8 +60,34 @@ const getCommentbyAuthor=async(authorId:string)=>{
     })
 }
 
+// 1. nijar comment delete korta parbe
+// login thakte hobe
+// tar nijar comment kina ata check korta hobe
+const deleteComment = async (commentId: string, authorId: string) => {
+    const commentData = await prisma.comment.findFirst({
+        where: {
+            id: commentId,
+            authorId
+        },
+        select: {
+            id: true
+        }
+    })
+
+    if (!commentData) {
+        throw new Error("Your provided input is invalid!")
+    }
+
+    return await prisma.comment.delete({
+        where: {
+            id: commentData.id
+        }
+    })
+}
+
 export const commentServie = {
   createComment,
   getCommentbyId,
-  getCommentbyAuthor
+  getCommentbyAuthor,
+  deleteComment
 };
