@@ -70,9 +70,27 @@ const getPostById = async (req: Request, res: Response) => {
         })
     }
 }
+//! Find my posts
+const findMyPosts=async(req:Request,res:Response)=>{
+    try {
+        const user=req.user;
+        const result=await postService.findMyPosts(user?.id as string);
+        res.status(200).json({
+            message:"Post retrive successfull",
+            data:result
+        })
+    } catch (error) {
+        const erroMessage= (error instanceof Error)? error.message:"Post fetch fail";
+        res.status(400).json({
+            message:erroMessage,
+            details:error
+        })
+    }
+}
 
 export const PostController = {
     createPost,
     getAllPost,
-    getPostById
+    getPostById,
+    findMyPosts
 }

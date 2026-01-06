@@ -134,11 +134,12 @@ const moderateComment=async(id:string, data:{status:CommentStatus})=>{
   })
 }
 
+
 export const commentServie = {
   createComment,
   getCommentbyId,
   getCommentbyAuthor,
   deleteComment,
   updateCommnet,
-  moderateComment
+  moderateComment,
 };
