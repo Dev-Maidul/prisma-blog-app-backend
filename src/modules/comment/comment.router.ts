@@ -18,4 +18,6 @@ router.delete(
   commentController.deleteComment
 );
 
+router.patch("/:commentId/modarate",auth(UserRole.ADMIN),commentController.moderateComment)
+
 export const commentRouter: Router = router;
