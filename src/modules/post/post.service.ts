@@ -212,10 +212,33 @@ const findMyPosts=async(authorId:string)=>{
   return result;
 }
 
+//? Update user post
+const updateMyPost=async(postId:string,authorId:string,data:Partial<Post>)=>{
+    const postData=await prisma.post.findFirstOrThrow({
+        where:{
+            id:postId
+        },
+        select:{
+            id:true,
+            authorId:true
+        }
+    })
+    if(postData.authorId!=authorId){
+        throw new Error("You are not creator of this post");
+    }
+    return await prisma.post.update({
+        where:{
+            id:postId
+        },
+        data
+    })
+}
+
 
 export const postService = {
     createPost,
     getAllPost,
     getPostById,
-    findMyPosts
+    findMyPosts,
+    updateMyPost
 }
