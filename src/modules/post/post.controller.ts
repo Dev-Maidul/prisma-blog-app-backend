@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { postService } from "./post.service";
 import { PostStatus } from "../../../generated/prisma/enums";
 import paginationSortingHelper from "../../helpers/paginationSortingHelper";
+import { UserRole } from "../../middlewares/auth";
 
 const createPost = async (req: Request, res: Response) => {
     try {
@@ -95,7 +96,9 @@ const updateMyPost=async(req:Request,res:Response)=>{
             throw new Error("You are not authorized")
         }
         const data=req.body;
-        const result=await postService.updateMyPost(postId as string,user.id, data);
+        const isAdmin=user.role===UserRole.ADMIN;
+        // console.log(user)
+        const result=await postService.updateMyPost(postId as string,user.id, data,isAdmin);
         res.status(200).json({
             message:"Post updated successfully",
             data:result

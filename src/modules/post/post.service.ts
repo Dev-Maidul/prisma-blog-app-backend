@@ -213,7 +213,7 @@ const findMyPosts=async(authorId:string)=>{
 }
 
 //? Update user post
-const updateMyPost=async(postId:string,authorId:string,data:Partial<Post>)=>{
+const updateMyPost=async(postId:string,authorId:string,data:Partial<Post>,isAdmin:boolean)=>{
     const postData=await prisma.post.findFirstOrThrow({
         where:{
             id:postId
@@ -223,8 +223,13 @@ const updateMyPost=async(postId:string,authorId:string,data:Partial<Post>)=>{
             authorId:true
         }
     })
-    if(postData.authorId!=authorId){
+    //! if not admin and it's not his post
+    if(!isAdmin && postData.authorId!=authorId){
         throw new Error("You are not creator of this post");
+    }
+    //? Here checking is features for user
+    if(!isAdmin){
+        delete data.isFeatured;
     }
     return await prisma.post.update({
         where:{
