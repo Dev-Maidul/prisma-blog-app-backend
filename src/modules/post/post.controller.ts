@@ -118,7 +118,7 @@ const deletePost=async(req:Request,res:Response)=>{
         if(!user){
             throw new Error("You are not authorized");
         }
-        console.log(user)
+        // console.log(user)
         const {postId}=req.params;
         const isAdmin=user.role===UserRole.ADMIN;
         const result=await postService.deletePost(postId as string,user.id as string,isAdmin);
@@ -134,6 +134,22 @@ const deletePost=async(req:Request,res:Response)=>{
         })
     }
 }
+const getStats=async(req:Request,res:Response)=>{
+    try {
+        
+        const result=await postService.getStats();
+        res.status(200).json({
+            message:"All Stats fetch successfull",
+            data:result
+        })
+    } catch (error) {
+        const errorMessage=(error instanceof Error)? error.message:"Stats fetch fail";
+        res.status(400).json({
+            message:errorMessage,
+            error
+        })
+    }
+}
 
 export const PostController = {
     createPost,
@@ -141,5 +157,6 @@ export const PostController = {
     getPostById,
     findMyPosts,
     updateMyPost,
-    deletePost
+    deletePost,
+    getStats
 }

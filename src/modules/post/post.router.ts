@@ -5,6 +5,7 @@ import auth, { UserRole } from "../../middlewares/auth";
 const router = express.Router();
 
 router.get("/", PostController.getAllPost);
+router.get("/stats",auth(UserRole.ADMIN), PostController.getStats);
 router.get("/my-posts",auth(UserRole.ADMIN,UserRole.USER),PostController.findMyPosts);
 router.get("/:postId", PostController.getPostById);
 router.patch("/:postId",auth(UserRole.ADMIN,UserRole.USER),PostController.updateMyPost)
