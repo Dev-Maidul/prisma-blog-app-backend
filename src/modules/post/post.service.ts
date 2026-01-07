@@ -238,6 +238,30 @@ const updateMyPost=async(postId:string,authorId:string,data:Partial<Post>,isAdmi
         data
     })
 }
+//! Delete post
+// 1. Admin can delete all user post
+// 2. User can delete only his post
+const deletePost=async(postId:string,authorId:string,isAdmin:boolean)=>{
+    //! 1. first of all find the post it's exists or nor
+    const postData=await prisma.post.findUniqueOrThrow({
+        where:{
+            id:postId
+        },
+        select:{
+            id:true,
+            authorId:true
+        }
+    })
+    //! 2. check if he is not admin and make sure that this post is his
+    if(!isAdmin && postData.authorId!=authorId){
+        throw new Error("You are not creator/owerner of this post");
+    }
+    return await prisma.post.delete({
+        where:{
+            id:postId
+        }
+    })
+}
 
 
 export const postService = {
@@ -245,5 +269,6 @@ export const postService = {
     getAllPost,
     getPostById,
     findMyPosts,
-    updateMyPost
+    updateMyPost,
+    deletePost
 }

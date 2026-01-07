@@ -9,5 +9,5 @@ router.get("/my-posts",auth(UserRole.ADMIN,UserRole.USER),PostController.findMyP
 router.get("/:postId", PostController.getPostById);
 router.patch("/:postId",auth(UserRole.ADMIN,UserRole.USER),PostController.updateMyPost)
 router.post("/", auth(UserRole.USER), PostController.createPost);
-
+router.delete("/:postId",auth(UserRole.ADMIN,UserRole.USER),PostController.deletePost)
 export const postRouter: Router = router;
