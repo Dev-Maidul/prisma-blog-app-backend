@@ -85,7 +85,7 @@ const findMyPosts=async(req:Request,res:Response)=>{
 }
 
 //? Update my post
-const updateMyPost=async(req:Request,res:Response)=>{
+const updateMyPost=async(req:Request,res:Response,next:NextFunction)=>{
     try {
         const {postId}=req.params;
         const user=req.user;
@@ -101,11 +101,7 @@ const updateMyPost=async(req:Request,res:Response)=>{
             data:result
         })
     } catch (error) {
-        const errorMessage=(error instanceof Error)?error.message:"Post Update fali";
-        res.status(400).json({
-            message:errorMessage,
-            error
-        })
+        next(error)
     }
 }
 //! Delete post
