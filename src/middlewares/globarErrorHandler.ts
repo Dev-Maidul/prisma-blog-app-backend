@@ -1,9 +1,19 @@
 import { NextFunction, Request, Response } from "express";
+import { Prisma } from "../../generated/prisma/client";
 
 export const errorHandler=(err:any,req:Request,res:Response,next:NextFunction)=>{
-    res.status(500);
+    let statusCode=500;
+    let errorMessage="Internal Server Error";
+    let errorDetails=err;
+
+    // Hanlde PrismaClientValidationError
+    if(err instanceof Prisma.PrismaClientValidationError){
+        statusCode=400;
+        errorMessage="You provided incorrect field type or name or missing field";
+    }
+    res.status(statusCode);
     res.json({
-        message:"Error from global error handler",
+        message:errorMessage,
         error:err
     })
 }
