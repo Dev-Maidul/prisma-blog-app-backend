@@ -5,6 +5,7 @@ import { auth } from "./lib/auth";
 import cors from 'cors';
 import { commentRouter } from "./modules/comment/comment.router";
 import { errorHandler } from "./middlewares/globarErrorHandler";
+import { notFound } from "./middlewares/notFound";
 
 
 const app: Application = express();
@@ -25,6 +26,8 @@ app.get("/", (req, res) => {
     res.send("Hello, World!");
 });
 
+//! Not found middleware
+app.use(notFound);
 //! Error handler middleware
 app.use(errorHandler)
 

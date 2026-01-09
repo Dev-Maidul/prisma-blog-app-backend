@@ -127,7 +127,7 @@ const deletePost=async(req:Request,res:Response)=>{
         })
     }
 }
-const getStats=async(req:Request,res:Response)=>{
+const getStats=async(req:Request,res:Response,next:NextFunction)=>{
     try {
         
         const result=await postService.getStats();
